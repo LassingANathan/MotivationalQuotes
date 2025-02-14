@@ -5,6 +5,8 @@ class QuoteRetriever():
         self.filePath = storedQuotesFilePath
         self.authorDelimiter = "@"
         
+        self.lastSentQuote = (None, None)
+        
     # Retrieve a random quote from the list
     # param:includeFavorites is a boolean for whether the favorite quotes should be included in this search
     # returns: a tuple with the quote as the first element and the author as the second element, or None as the second element if no author was included
@@ -52,6 +54,7 @@ class QuoteRetriever():
                 quoteAuthor = favoriteQuoteAuthors[randQuoteIndex]
                 
                 # Return the tuple described at function header
+                self.lastSentQuote = (quoteContent, quoteAuthor)
                 return (quoteContent, quoteAuthor)
     
     # Retrieve a random quote from the favorites list
@@ -99,5 +102,15 @@ class QuoteRetriever():
             quoteAuthor = favoriteQuoteAuthors[randQuoteIndex]
             
             # Return the tuple described at function header
+            self.lastSentQuote = (quoteContent, quoteAuthor)
             return (quoteContent, quoteAuthor)
         
+    # Adds the most recently sent quote to the Favorite list
+    # returns: False if the quote couldn't be added, and True otherwise
+    def addLastSentQuoteToFavorites(self) -> bool:
+        # Return false if a quote hasn't yet been sent
+        if self.lastSentQuote == (None, None):
+            return False
+        with open(self.filePath, 'a') as f:
+            f.write(self.lastSentQuote[0] + " @ " + self.lastSentQuote[1])
+            return True
