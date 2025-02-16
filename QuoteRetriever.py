@@ -114,3 +114,27 @@ class QuoteRetriever():
         with open(self.filePath, 'a') as f:
             f.write(self.lastSentQuote[0] + " @ " + self.lastSentQuote[1])
             return True
+        
+    # Makes it so the most recently sent quote is no longer a possibility to be sent
+    # returns: False if the quote couldn't be found, and True otherwise
+    def removeLastSentQuote(self) -> bool: 
+        # Return false if a quote hasn't yet been sent
+        if self.lastSentQuote == (None, None):
+            return False
+        else:
+            lines = []
+            # Get all lines in storedQuotes
+            with open(self.filePath, 'r') as f:
+                lines = f.readlines()
+                
+            # Write back all lines except for the quote we want to remove
+            with open(self.filePath, 'w') as f:
+                quoteContent = self.lastSentQuote[0]
+                quoteAuthor = self.lastSentQuote[1] or "" # Set to empty string if author is currently None
+                # Ignore string with quote we don't want
+                for line in lines:
+                    if line.strip() == (quoteContent + " @ " + quoteAuthor) or line.strip() == quoteContent:
+                        continue
+                    f.write(line)
+                    
+        return True
