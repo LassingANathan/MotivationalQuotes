@@ -118,11 +118,17 @@ class QuoteRetriever():
             else:
                 f.write(self.lastSentQuote[0] + " @ " + self.lastSentQuote[1])
             
+            # Remove the quote from the default list
+            self.removeLastSentQuote(1)
+            
             return True
         
     # Makes it so the most recently sent quote is no longer a possibility to be sent
+    # param:occurences dictates how many instances of the quote we'll remove
     # returns: False if the quote couldn't be found, and True otherwise
-    def removeLastSentQuote(self) -> bool: 
+    def removeLastSentQuote(self, occurrences=999999) -> bool: 
+        quotesRemoved = 0
+        
         # Return false if a quote hasn't yet been sent
         if self.lastSentQuote == (None, None):
             return False
@@ -138,7 +144,9 @@ class QuoteRetriever():
                 quoteAuthor = self.lastSentQuote[1] or "" # Set to empty string if author is currently None
                 # Ignore string with quote we don't want
                 for line in lines:
-                    if line.strip() == (quoteContent + " @ " + quoteAuthor) or line.strip() == quoteContent:
+                    # Don't remove this instance of the quote if we've already removed the amount we wanted to remove
+                    if (quotesRemoved < occurrences and (line.strip() == (quoteContent + " @ " + quoteAuthor)) or (line.strip() == quoteContent)):
+                        quotesRemoved += 1
                         continue
                     f.write(line)
                     
