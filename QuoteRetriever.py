@@ -10,7 +10,7 @@ class QuoteRetriever():
     # Retrieve a random quote from the list
     # param:includeFavorites is a boolean for whether the favorite quotes should be included in this search
     # returns: a tuple with the quote as the first element and the author as the second element, or None as the second element if no author was included
-    def retrieveRandomQuote(self, includeFavorites=True) -> tuple:
+    def retrieveRandomQuote(self, includeFavorites:bool=True) -> tuple:
         with open(self.filePath, 'r') as f:
             # Read file
             lines = f.readlines()
@@ -105,6 +105,37 @@ class QuoteRetriever():
             self.lastSentQuote = (quoteContent, quoteAuthor)
             return (quoteContent, quoteAuthor)
         
+    # Adds a given quote to the list
+    # param:quoteContent is a string for the actual content of the quote
+    # param:quoteAuthor is a string for the author of the quote
+    # param:addAsFavorite is a boolean for whether to add this quote as a favorite or not
+    # returns: True if the quote was successfully added, and false otherwise
+    def addQuote(self, quoteContent: str, quoteAuthor:str=None, addAsFavorite=True) -> True:            
+        if addAsFavorite: # Add the quote to the favorite's list
+            with open(self.filePath, 'a') as f: # Append quote to end of file
+                # Change what we write based on if we have an author
+                if quoteAuthor == None:
+                    f.write("\n" + quoteContent.strip())
+                else:
+                    f.write("\n" + quoteContent.strip() + " @ " + quoteAuthor)
+                
+        else: # Don't add it as a favorite
+            lines = []
+            # Get all lines in storedQuotes
+            with open(self.filePath, 'r') as f:
+                lines = f.readlines()
+                
+            # Add line to beginning of file, and then write everything back
+            with open(self.filePath, "w") as f:
+                # Change what we write based on if we have an author
+                if quoteAuthor == None:
+                    f.write(quoteContent.strip() + "\n")
+                else:
+                    f.write(quoteContent.strip() + " @ " + quoteAuthor.strip() + "\n")
+                    
+                for line in lines:
+                    f.write(line)
+    
     # Adds the most recently sent quote to the Favorite list
     # returns: False if the quote couldn't be added, and True otherwise
     def addLastSentQuoteToFavorites(self) -> bool:
@@ -126,7 +157,7 @@ class QuoteRetriever():
     # Makes it so the most recently sent quote is no longer a possibility to be sent
     # param:occurences dictates how many instances of the quote we'll remove
     # returns: False if the quote couldn't be found, and True otherwise
-    def removeLastSentQuote(self, occurrences=999999) -> bool: 
+    def removeLastSentQuote(self, occurrences:int=999999) -> bool: 
         quotesRemoved = 0
         
         # Return false if a quote hasn't yet been sent
