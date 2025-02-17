@@ -10,7 +10,7 @@ class QuoteRetriever():
     # Retrieve a random quote from the list
     # param:includeFavorites is a boolean for whether the favorite quotes should be included in this search
     # returns: a tuple with the quote as the first element and the author as the second element, or None as the second element if no author was included
-    def retrieveRandomQuote(self, includeFavorites=False) -> tuple:
+    def retrieveRandomQuote(self, includeFavorites=True) -> tuple:
         with open(self.filePath, 'r') as f:
             # Read file
             lines = f.readlines()
