@@ -112,7 +112,12 @@ class QuoteRetriever():
         if self.lastSentQuote == (None, None):
             return False
         with open(self.filePath, 'a') as f:
-            f.write(self.lastSentQuote[0] + " @ " + self.lastSentQuote[1])
+            # Write quote based on whether or not author exists
+            if self.lastSentQuote[1] == None:
+                f.write(self.lastSentQuote[0])
+            else:
+                f.write(self.lastSentQuote[0] + " @ " + self.lastSentQuote[1])
+            
             return True
         
     # Makes it so the most recently sent quote is no longer a possibility to be sent
