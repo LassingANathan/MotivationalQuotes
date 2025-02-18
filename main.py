@@ -28,11 +28,11 @@ def main():
                 # Options: 
                 # -f: only from favorites
                 # -nf: don't include favorites
-                if len(splitMessage) == 0:
+                if len(splitMessage) == 1:
                     # Retrieve and send quote
                     quote = quoteRetriever.retrieveRandomQuote()
                     sendQuote(quote, socket)
-                elif len(splitMessage) == 1:
+                elif len(splitMessage) == 2:
                     if splitMessage[1] == "-f":
                         # Retrieve and send favorite quote
                         quote = quoteRetriever.retrieveRandomFavoriteQuote()
@@ -74,6 +74,7 @@ def main():
                     socket.send_string("Error. multiple @ symobls in request: " + decodedMessage) 
 
     # Make a clean exit
+    socket.send_string("EXIT")
     context.destroy()
 
 # Sends a quote on the given socket
