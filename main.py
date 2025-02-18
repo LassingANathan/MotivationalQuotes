@@ -42,14 +42,14 @@ def main():
                         quote = quoteRetriever.retrieveRandomQuote(False)
                         sendQuote(quote, socket)
                     else:
-                        socket.send_string("Error, unknown argument passed: " + splitMessage[1])
+                        socket.send_string("Error. unknown argument passed: " + splitMessage[1])
                 else:
                     # Get entire command into one string
                     errorString = ""
                     for s in splitMessage:
                         errorString.append(s)
                         
-                    socket.send_string("Error, multiple arguments passed in request: " + errorString) 
+                    socket.send_string("Error. multiple arguments passed in request: " + errorString) 
             elif splitMessage[0] == "fav": # Client asked server to favorite the last quote
                 # Add quote to favorite and send back whether or not it succeeded
                 success = quoteRetriever.addLastSentQuoteToFavorites()
@@ -59,7 +59,19 @@ def main():
                 success = quoteRetriever.removeLastSentQuote()
                 socket.send_string(str(success))
             elif splitMessage[0] == "add": # Client asked server to add a quote to the list
-                pass
+                # Get quote and author, if author was sent
+                quoteAndAuthor = decodedMessage.split("@")
+                quoteAndAuthor = [string.strip() for string in quoteAndAuthor]
+                
+                # Determine if an author was sent
+                if len(quoteAndAuthor == 1): # Author not sent
+                    success = quoteRetriever.addQuote(quoteAndAuthor[0])
+                    socket.send_string(str(success))
+                elif len(quoteAndAuthor == 2): # Author sent
+                    success = quoteRetriever.addQuote(quoteAndAuthor[0], quoteAndAuthor[1])
+                    socket.send_string(str(success))
+                else: # String had multiple @s, return error
+                    socket.send_string("Error. multiple @ symobls in request: " + decodedMessage) 
 
     # Make a clean exit
     context.destroy()
