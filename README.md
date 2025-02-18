@@ -69,3 +69,10 @@ and if you do want to include the author, you'd send the following command:
 socket.send_string("add To be, or not to be @ Shakespeare")
 ```
 If an error occurred due to the command containing more than one @ (such as if the quote itself contained an @), the server will send back the string "Error. multiple @ symobls in request: REQUEST_STRING", and the quote will not be added.
+# Quitting
+It's vital that, when ending the microservice, you send the following command:
+```
+socket.send_string("Q")
+```
+If this is not sent, the socket connection will not close correctly, and the port may not be free the next time you attempt to open the microservice. If the microservice ever crashes, it closes its connection correctly, but I cannot force it to close safely if you end the program yourself without sending "Q".
+The service will send one final message of "EXIT" before terminating itself.
