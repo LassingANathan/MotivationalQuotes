@@ -76,3 +76,10 @@ socket.send_string("Q")
 ```
 If this is not sent, the socket connection will not close correctly, and the port may not be free the next time you attempt to open the microservice. If the microservice ever crashes, it closes its connection correctly, but I cannot force it to close safely if you end the program yourself without sending "Q".
 The service will send one final message of "EXIT" before terminating itself.
+# Sequence Diagrams
+Below is a sequence diagram for retrieving a quote from the microservice:
+![Sequence Diagram for quote retrieval](readmeImages/QuoteSD.png)
+
+And below is another sequence diagram for an arbitrary interaction with the microservice:
+![Sequence Diagram for arbitrary requests](readmeImages/GeneralSD.png)
+
