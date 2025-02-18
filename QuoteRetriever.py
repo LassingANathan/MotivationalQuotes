@@ -115,9 +115,9 @@ class QuoteRetriever():
             with open(self.filePath, 'a') as f: # Append quote to end of file
                 # Change what we write based on if we have an author
                 if quoteAuthor == None:
-                    f.write("\n" + quoteContent.strip())
+                    f.write(quoteContent.strip() + "\n")
                 else:
-                    f.write("\n" + quoteContent.strip() + " @ " + quoteAuthor)
+                    f.write(quoteContent.strip() + " @ " + quoteAuthor + "\n")
                 
         else: # Don't add it as a favorite
             lines = []
@@ -145,9 +145,9 @@ class QuoteRetriever():
         with open(self.filePath, 'a') as f:
             # Write quote based on whether or not author exists
             if self.lastSentQuote[1] == None:
-                f.write("\n" + self.lastSentQuote[0])
+                f.write(self.lastSentQuote[0] + "\n")
             else:
-                f.write("\n" + self.lastSentQuote[0] + " @ " + self.lastSentQuote[1])
+                f.write(self.lastSentQuote[0] + " @ " + self.lastSentQuote[1] + "\n")
             
             # Remove the quote from the default list
             self.removeLastSentQuote(1)
