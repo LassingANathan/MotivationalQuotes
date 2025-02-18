@@ -135,6 +135,8 @@ class QuoteRetriever():
                     
                 for line in lines:
                     f.write(line)
+                    
+        return True
     
     # Adds the most recently sent quote to the Favorite list
     # returns: False if the quote couldn't be added, and True otherwise
