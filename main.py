@@ -25,9 +25,37 @@ def main():
             if splitMessage[0] == 'Q': # Client asked server to quit
                 break
             elif splitMessage[0] == "quote": # Client asked server to give a quote
-                # Create and send quote
-                quote = quoteRetriever.retrieveRandomQuote()
-                sendQuote(quote, socket)
+                # Options: 
+                # -f: only from favorites
+                # -nf: don't include favorites
+                if len(splitMessage) == 0:
+                    # Retrieve and send quote
+                    quote = quoteRetriever.retrieveRandomQuote()
+                    sendQuote(quote, socket)
+                elif len(splitMessage) == 1:
+                    if splitMessage[1] == "-f":
+                        # Retrieve and send favorite quote
+                        quote = quoteRetriever.retrieveRandomFavoriteQuote()
+                        sendQuote(quote, socket)
+                    elif splitMessage[1] == "-nf":
+                        # Retrieve and send non-favorite quote
+                        quote = quoteRetriever.retrieveRandomQuote(False)
+                        sendQuote(quote, socket)
+                    else:
+                        socket.send_string("Error, unknown argument passed: " + splitMessage[1])
+                else:
+                    # Get entire command into one string
+                    errorString = ""
+                    for s in splitMessage:
+                        errorString.append(s)
+                        
+                    socket.send_string("Error, multiple arguments passed in request: " + errorString) 
+            elif splitMessage[0] == "fav": # Client asked server to favorite the last quote
+                pass
+            elif splitMessage[0] == "del": # Client asked server to delete the last quote
+                pass
+            elif splitMessage[0] == "add": # Client asked server to add a quote to the list
+                pass
 
     # Make a clean exit
     context.destroy()
