@@ -51,9 +51,13 @@ def main():
                         
                     socket.send_string("Error, multiple arguments passed in request: " + errorString) 
             elif splitMessage[0] == "fav": # Client asked server to favorite the last quote
-                pass
+                # Add quote to favorite and send back whether or not it succeeded
+                success = quoteRetriever.addLastSentQuoteToFavorites()
+                socket.send_string(str(success))
             elif splitMessage[0] == "del": # Client asked server to delete the last quote
-                pass
+                # Delete quote and send back whether or not it succeeded
+                success = quoteRetriever.removeLastSentQuote()
+                socket.send_string(str(success))
             elif splitMessage[0] == "add": # Client asked server to add a quote to the list
                 pass
 
