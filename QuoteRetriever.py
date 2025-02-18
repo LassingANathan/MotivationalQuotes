@@ -145,9 +145,9 @@ class QuoteRetriever():
         with open(self.filePath, 'a') as f:
             # Write quote based on whether or not author exists
             if self.lastSentQuote[1] == None:
-                f.write(self.lastSentQuote[0])
+                f.write("\n" + self.lastSentQuote[0])
             else:
-                f.write(self.lastSentQuote[0] + " @ " + self.lastSentQuote[1])
+                f.write("\n" + self.lastSentQuote[0] + " @ " + self.lastSentQuote[1])
             
             # Remove the quote from the default list
             self.removeLastSentQuote(1)
