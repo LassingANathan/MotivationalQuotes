@@ -24,6 +24,10 @@ Once a quote has been requested, recieve and store the quote in the variable "me
 ```
 message = socket.recv()
 ```
+It's VERY important that, after recieving ANY message back from the microservice, you first DECODE the message via the following:
+```
+message = message.decode()
+```
 ### Arguments
 Add "-f" at the end of the command to request a favorite quote, and add "-nf" to request a non-favorite quote (if no additional arguments are present, the quote will be randomly chosen from a pool including the favorites list and the default list)
 ```
