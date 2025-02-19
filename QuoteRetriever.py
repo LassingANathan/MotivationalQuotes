@@ -14,8 +14,8 @@ class QuoteRetriever():
         with open(self.filePath, 'r') as f:
             # Read file
             lines = f.readlines()
-            favoriteQuotes = [] # Parallel arrays for storing a quote's CONTENT
-            favoriteQuoteAuthors = [] # Parallel arrays for storing a quote's AUTHOR (or None)
+            quotes = [] # Parallel arrays for storing a quote's CONTENT
+            authors = [] # Parallel arrays for storing a quote's AUTHOR (or None)
             
             # Get all quotes that aren't favorites
             for line in lines:
@@ -31,27 +31,30 @@ class QuoteRetriever():
                     
                     # Determine if the quote had an author
                     if (len(quoteParts) == 1): # No author
-                        favoriteQuotes.append(quoteParts[0].strip())
-                        favoriteQuoteAuthors.append(None)
+                        quotes.append(quoteParts[0].strip())
+                        authors.append(None)
                     elif (len(quoteParts) == 2): # Quote had an author
-                        favoriteQuotes.append(quoteParts[0].strip())
-                        favoriteQuoteAuthors.append(quoteParts[1].strip())
+                        quotes.append(quoteParts[0].strip())
+                        authors.append(quoteParts[1].strip())
                     else: # A quote likely had an @ symbol in it, and everything is ruined
-                        favoriteQuotes.append(None)
-                        favoriteQuotes.append(None)             
+                        quotes.append(None)
+                        authors.append(None)             
 
             
             # Generate a quote until one works
             while True:
-                randQuoteIndex = random.randint(0, len(favoriteQuotes) - 1)
+                # If no quotes are stored, return None None
+                if len(quotes) <= 0:
+                    return ("NoQuote", "NoAuthor")
+                randQuoteIndex = random.randint(0, len(quotes) - 1)
                 
-                quoteContent = favoriteQuotes[randQuoteIndex]
+                quoteContent = quotes[randQuoteIndex]
                 
                 # Pick another quote if this quote's content is None, it means something is messed up with it
                 if quoteContent == None:
                     continue
                 
-                quoteAuthor = favoriteQuoteAuthors[randQuoteIndex]
+                quoteAuthor = authors[randQuoteIndex]
                 
                 # Return the tuple described at function header
                 self.lastSentQuote = (quoteContent, quoteAuthor)
@@ -91,6 +94,9 @@ class QuoteRetriever():
                         
         # Generate a quote until one works
         while True:
+            # If no quotes are stored, return None None
+            if len(favoriteQuotes) <= 0:
+                return ("NoQuote", "NoAuthor")
             randQuoteIndex = random.randint(0, len(favoriteQuotes) - 1)
             
             quoteContent = favoriteQuotes[randQuoteIndex]
