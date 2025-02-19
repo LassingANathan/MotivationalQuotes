@@ -39,6 +39,8 @@ socket.send_string("quote -nf")
 ```
 ### Errors
 If an error occurs, due to unrecognized arguments or too many arguments being passed, the server will send back a string starting with "Error." and then a description of the error, instead of a quote.
+## No Stored Quotes
+In the event that a quote is requested and no quotes are stored, the server will send back the string "NoQuote - NoAuthor"
 # Adding a Quote To Favorites
 To add the most recently retrieved quote to the Favorites list, send the following command:
 ```
